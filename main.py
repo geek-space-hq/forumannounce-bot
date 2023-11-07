@@ -22,10 +22,9 @@ bot = commands.Bot(
 async def on_ready():
     print("login!")
     
-@bot.event
-async def on_message(message: discord.Message):
-    if message.author.bot:
-        return
-    await message.reply(message.content)
 
+@bot.event
+async def on_thread_create(thread: discord.Thread):
+    if(thread.parent.type=="forum"): #forumの新規ポストを監視する
+        print("forum create!!")
 bot.run(BOT_TOKEN)
