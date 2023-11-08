@@ -9,22 +9,20 @@ intents = discord.Intents.default()
 intents.members = True # メンバー管理の権限
 intents.message_content = True # メッセージの内容を取得する権限
 
-
-# Botをインスタンス化
-bot = commands.Bot(
-    command_prefix="$", # $コマンド名　でコマンドを実行できるようになる
-    case_insensitive=True, # コマンドの大文字小文字を区別しない ($hello も $Hello も同じ!)
-    intents=intents # 権限を設定
-)
+bot = discord.Client(intents=intents) # 権限を設定
+tree = app_commands.CommandTree(bot)
 
 
 @bot.event
 async def on_ready():
     print("login!")
-    
+    await tree.sync()#スラッシュコマンドを同期
 
-@bot.event
 async def on_thread_create(thread: discord.Thread):
     if(thread.parent.type=="forum"): #forumの新規ポストを監視する
         print("forum create!!")
+
+@tree.command(name="frgs",description="フォーラム通知を流すチャンネルをこのチャンネルに設定します")
+async def test_command(interaction: discord.Interaction):
+    await interaction.response.send_message("てすと！",ephemeral=True)
 bot.run(BOT_TOKEN)
