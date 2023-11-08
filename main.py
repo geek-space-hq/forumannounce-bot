@@ -23,7 +23,7 @@ async def on_ready():
 @bot.event
 async def on_thread_create(thread: discord.Thread):
     print("new tread!\n tread type:"+str(thread.parent.type))
-    if(str(thread.parent.type)=="forum"): #forumの新規ポストを監視する
+    if(thread.parent.type==discord.ChannelType.forum): #forumの新規ポストを監視する
         print("new post!")
         with open(SETTING_JSON,'r')as f:#設定用json読み込み
             settings=json.load(f)
