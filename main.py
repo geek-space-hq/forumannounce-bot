@@ -3,6 +3,8 @@ from discord.ext import commands
 from discord import app_commands
 import os
 import json
+import re
+from urllib.parse import urlparse
 
 BOT_TOKEN=os.environ['forumannouce-bot-API-TOKEN']
 SETTING_JSON="settings.json"
@@ -29,8 +31,19 @@ async def on_thread_create(thread: discord.Thread):
             settings=json.load(f)
         send_channel=bot.get_channel(settings[SEND_CHANNEL_ID])
         await send_channel.send(thread.jump_url+" in "+thread.parent.jump_url)
-        thread.name
 
+@bot.event
+async def on_message(message:discord.Message):
+  if(message.type==discord.MessageType.default):
+    links=re.findall('https?://[\w/:%#\$&\?\(\)~\.=\+\-]+',message.content)
+    if(len(links)>0):
+      for link in links:
+        parse_url=urlparse(link)
+        print(parse_url)
+        if(parse_url.netloc=="x.com"):
+          print(parse_url.scheme)
+          await message.channel.send(content=str(parse_url.scheme)+"://"+"fxtwitter.com"+str(parse_url.path)+str(parse_url.query))
+          
 @tree.command(name="frgs",description="フォーラム通知を流すチャンネルをこのチャンネルに設定します")
 async def test_command(interaction: discord.Interaction):
     
