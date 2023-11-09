@@ -28,7 +28,7 @@ async def on_thread_create(thread: discord.Thread):
         with open(SETTING_JSON,'r')as f:#設定用json読み込み
             settings=json.load(f)
         send_channel=bot.get_channel(settings[SEND_CHANNEL_ID])
-        await send_channel.send(thread.jump_url+" (in "+thread.parent.jump_url+" )")
+        await send_channel.send(thread.jump_url+" in "+thread.parent.jump_url)
         thread.name
 
 @tree.command(name="frgs",description="フォーラム通知を流すチャンネルをこのチャンネルに設定します")
