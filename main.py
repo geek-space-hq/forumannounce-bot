@@ -22,28 +22,29 @@ async def on_ready():
     print("login!")
     await tree.sync()#スラッシュコマンドを同期
 
+#フォーラムチャンネルの新規ポストを検出すｒ
 @bot.event
 async def on_thread_create(thread: discord.Thread):
-    print("new tread!\n tread type:"+str(thread.parent.type))
-    if(thread.parent.type==discord.ChannelType.forum): #forumの新規ポストを監視する
+    if(thread.parent.type==discord.ChannelType.forum): #threadの親チャンネルがフォーラムチャンネルか判定
         print("new post!")
         with open(SETTING_JSON,'r')as f:#設定用json読み込み
             settings=json.load(f)
         send_channel=bot.get_channel(settings[SEND_CHANNEL_ID])
         await send_channel.send(thread.jump_url+" in "+thread.parent.jump_url)
 
+#x.con→fxtwitter.comに変換する
 @bot.event
 async def on_message(message:discord.Message):
-  if(message.type==discord.MessageType.default):
-    links=re.findall('https?://[\w/:%#\$&\?\(\)~\.=\+\-]+',message.content)
-    if(len(links)>0):
+  if(message.type==discord.MessageType.default):#テキストメッセージ判定 いらないかも
+    links=re.findall('https?://[\w/:%#\$&\?\(\)~\.=\+\-]+',message.content)#messageに含まれるURLを抽出する
+    if(len(links)>0): #URLが含まれる
       for link in links:
         parse_url=urlparse(link)
         print(parse_url)
-        if(parse_url.netloc=="x.com"):
-          print(parse_url.scheme)
+        if(parse_url.netloc=="x.com"):#ドメインがx.comの場合
           await message.channel.send(content=str(parse_url.scheme)+"://"+"fxtwitter.com"+str(parse_url.path)+str(parse_url.query))
-          
+
+#フォーラム通知設定用のスラッシュコマンド
 @tree.command(name="frgs",description="フォーラム通知を流すチャンネルをこのチャンネルに設定します")
 async def test_command(interaction: discord.Interaction):
     
