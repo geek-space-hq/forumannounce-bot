@@ -6,7 +6,7 @@ import json
 import re
 from urllib.parse import urlparse
 
-BOT_TOKEN=os.environ['forumannouce-bot-API-TOKEN']
+BOT_TOKEN=os.environ['FORUMANNOUCE_BOT_API-TOKEN']
 SETTING_JSON="settings.json"
 SEND_CHANNEL_ID='send_messagechannel_ID'
 intents = discord.Intents.default()
