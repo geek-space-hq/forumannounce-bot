@@ -1,0 +1,7 @@
+services:
+  forumannounce-bot:
+    build:
+      context: .
+    environment:
+      FORUMANNOUCE_BOT_API_TOKEN: "${BOT_TOKEN}"
+      SEND_CHANNEL_ID: "${SEND_CHANNEL_ID}"

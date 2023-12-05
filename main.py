@@ -6,9 +6,9 @@ import json
 import re
 from urllib.parse import urlparse
 
-BOT_TOKEN=os.environ['FORUMANNOUCE_BOT_API_TOKEN']
 SETTING_JSON="settings.json"
-SEND_CHANNEL_ID='send_messagechannel_ID'
+BOT_TOKEN=os.environ['FORUMANNOUCE_BOT_API_TOKEN']
+SEND_CHANNEL_ID=os.environ['SEND_CHANNEL_ID']
 intents = discord.Intents.default()
 intents.members = True # メンバー管理の権限
 intents.message_content = True # メッセージの内容を取得する権限
@@ -29,7 +29,7 @@ async def on_thread_create(thread: discord.Thread):
         print("new post!")
         with open(SETTING_JSON,'r')as f:#設定用json読み込み
             settings=json.load(f)
-        send_channel=bot.get_channel(settings[SEND_CHANNEL_ID])
+        send_channel = await bot.fetch_channel(SEND_CHANNEL_ID)
         await send_channel.send(thread.jump_url+" in "+thread.parent.jump_url)
 
 #x.con→fxtwitter.comに変換する
