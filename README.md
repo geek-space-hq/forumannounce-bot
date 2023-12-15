@@ -1,2 +1,3 @@
 Disboardのフォーラムの新規投稿を通知するBOT
 # forumannounce-bot
+ついでにx.comリンクをfxtwitter.comリンクにして送信する
